@@ -20,4 +20,4 @@ All other trademarks cited herein are the property of their respective owners.
 Permission to modify and redistribute is granted under the terms of the Apache 2.0 license.
 
   [license-image]: https://img.shields.io/badge/license-apache%20v2-brightgreen.svg
-  [license-url]: https://github.com/DependencyTrack/fortify-ssc-plugin/blob/master/LICENSE.txt
+  [License]: https://github.com/DependencyTrack/fortify-ssc-plugin/blob/master/LICENSE.txt
