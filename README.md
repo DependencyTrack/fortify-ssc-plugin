@@ -5,7 +5,7 @@ Dependency-Track plugin for Fortify SSC
 =========
 
 This plugin allows Fortify SSC to integrate results from Dependency-Track alongside 
-findings from SSC, providing a consolidated view of security-centric code findings 
+findings from SCA, providing a consolidated view of security-centric code findings 
 and vulnerable component findings.
 
 This plugin is currently in active development and has not yet been released.
