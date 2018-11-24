@@ -1,0 +1,166 @@
+[
+  [
+    {
+      "type": "template",
+      "title": "Overview",
+      "key": "customAttributes.vulnerabilityDescription",
+      "templateId": "COLLAPSE",
+      "dataType": "string"
+    },
+    {
+      "type": "template",
+      "title": "Recommendation",
+      "key": "customAttributes.vulnerabilityRecommendation",
+      "templateId": "COLLAPSE",
+      "dataType": "string"
+    },
+    {
+      "type": "fieldset",
+      "htmlClass": "container-spacer-bottom",
+      "items": [
+        {
+          "type": "template",
+          "title": "Vulnerability UUID",
+          "key": "customAttributes.vulnerabilityUuid",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Vulnerability ID",
+          "key": "customAttributes.vulnerabilityId",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Vulnerability source",
+          "key": "customAttributes.vulnerabilitySource",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Vulnerability title",
+          "key": "customAttributes.vulnerabilityTitle",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Vulnerability subtitle",
+          "key": "customAttributes.vulnerabilitySubTitle",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "CWE ID",
+          "key": "customAttributes.vulnerabilityCweId",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "CWE",
+          "key": "customAttributes.vulnerabilityCweName",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "type": "template",
+      "templateId": "TITLEBOX",
+      "title": "Details",
+      "items": [
+        {
+          "type": "template",
+          "title": "Dependency-Track Project UUID",
+          "key": "customAttributes.projectUuid",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Project Name",
+          "key": "customAttributes.projectName",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Project Version",
+          "key": "customAttributes.projectVersion",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Component UUID",
+          "key": "customAttributes.componentUuid",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Component Name",
+          "key": "customAttributes.componentName",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Component Group",
+          "key": "customAttributes.componentGroup",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Component Version",
+          "key": "customAttributes.componentVersion",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Component Package URL",
+          "key": "customAttributes.componentPurl",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "CVSS base score",
+          "key": "customAttributes.cvssBaseScore",
+          "templateId": "SIMPLE",
+          "dataType": "integer"
+        },
+        {
+          "type": "template",
+          "title": "CVSS impact score",
+          "key": "customAttributes.cvssImpactScore",
+          "templateId": "SIMPLE",
+          "dataType": "integer"
+        },
+        {
+          "type": "template",
+          "title": "CVSS exploitability score",
+          "key": "customAttributes.cvssExploitabilityScore",
+          "templateId": "SIMPLE",
+          "dataType": "integer"
+        },
+        {
+          "type": "template",
+          "title": "CVSS vector",
+          "key": "customAttributes.cvssVector",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        }
+      ]
+    }
+  ]
+]

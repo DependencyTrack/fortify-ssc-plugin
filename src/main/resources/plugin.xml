@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugin xmlns="xmlns://www.fortify.com/schema/pluginmanifest-1.0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PluginDescriptor"
+        id="org.dependencytrack.integrations.fortifyssc.DependencyTrackParserPlugin" api-version="1.0">
+    <plugin-info>
+        <name>Dependency-Track Plugin</name>
+        <version>0.1.0</version>
+        <data-version>1</data-version>
+        <vendor name="Dependency-Track" url="https://dependencytrack.org/"/>
+        <description>This plugin allows Fortify SSC to integrate results from Dependency-Track alongside findings from SSC, providing a consolidated view of security-centric code findings and vulnerable component findings.</description>
+        <resources>
+            <localization>
+                <language id="default" location="/lang/lang_en.properties"/>
+            </localization>
+            <images>
+                <image imageType="icon" location="/images/icon.png"/>
+                <image imageType="logo" location="/images/logo.png"/>
+            </images>
+        </resources>
+    </plugin-info>
+    <issue-parser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <engine-type>DEPENDENCY_TRACK</engine-type>
+        <supported-engine-versions>[3.3.1, 4.0)</supported-engine-versions>
+        <view-template location="/viewtemplate/DependencyTrackTemplate.json">
+            <description>Default Dependency-Track vulnerability view template.</description>
+        </view-template>
+    </issue-parser>
+</plugin>
