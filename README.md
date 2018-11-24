@@ -10,6 +10,12 @@ and vulnerable component findings.
 
 This plugin is currently in active development and has not yet been released.
 
+Requirements
+-------------------
+
+- Fortify SSC 17.20 or higher
+- Dependency-Track 3.4.0 or higher
+
 Copyright & License
 -------------------
 
