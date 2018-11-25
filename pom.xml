@@ -5,7 +5,7 @@
     <groupId>org.dependencytrack</groupId>
     <artifactId>fortify-ssc-plugin</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.2</version> <!-- version must match (\\d+)(\\.\\d+)* therefore no -SNAPSHOT versions allowed
+    <version>0.1.2</version> <!-- version must match (\\d+)(\\.\\d+)* therefore no -SNAPSHOT versions allowed -->
 
     <name>Dependency-Track Plugin for Fortify SSC</name>
     <description>
