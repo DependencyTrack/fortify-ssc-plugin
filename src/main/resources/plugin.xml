@@ -4,7 +4,7 @@
         id="org.dependencytrack.integrations.fortifyssc.DependencyTrackParserPlugin" api-version="1.0">
     <plugin-info>
         <name>Dependency-Track Plugin</name>
-        <version>0.1.0</version>
+        <version>${project.version}</version>
         <data-version>1</data-version>
         <vendor name="Dependency-Track" url="https://dependencytrack.org/"/>
         <description>This plugin allows Fortify SSC to integrate results from Dependency-Track alongside findings from SCA, providing a consolidated view of security-centric code findings and vulnerable component findings.</description>
