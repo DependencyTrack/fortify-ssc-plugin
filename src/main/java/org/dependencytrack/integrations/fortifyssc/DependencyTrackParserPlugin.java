@@ -102,19 +102,19 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
         // NOTE: Project was not included in the response in Dependency-Track v3.3.x, therefore it may be null.
         if (project != null) {
             if (project.getUuid() != null) {
-                vb.setStringCustomAttributeValue(PROJECT_UUID, project.getUuid());
+                //vb.setStringCustomAttributeValue(PROJECT_UUID, project.getUuid());
             }
             if (project.getName() != null) {
-                vb.setStringCustomAttributeValue(PROJECT_NAME, project.getName());
+                //vb.setStringCustomAttributeValue(PROJECT_NAME, project.getName());
             }
             if (project.getVersion() != null) {
-                vb.setStringCustomAttributeValue(PROJECT_VERSION, project.getVersion());
+                //vb.setStringCustomAttributeValue(PROJECT_VERSION, project.getVersion());
             }
         }
 
         // COMPONENT attributes
         if (comp.getUuid() != null) {
-            vb.setStringCustomAttributeValue(COMPONENT_UUID, comp.getUuid());
+            //vb.setStringCustomAttributeValue(COMPONENT_UUID, comp.getUuid());
         }
         if (comp.getName() != null) {
             vb.setStringCustomAttributeValue(COMPONENT_NAME, comp.getName());
@@ -131,7 +131,7 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
 
         // VULNERABILITY attributes
         if (vuln.getUuid() != null) {
-            vb.setStringCustomAttributeValue(VULNERABILITY_UUID, vuln.getUuid());
+            //vb.setStringCustomAttributeValue(VULNERABILITY_UUID, vuln.getUuid());
         }
         if (vuln.getSource() != null) {
             vb.setStringCustomAttributeValue(VULNERABILITY_SOURCE, vuln.getSource());
@@ -140,10 +140,10 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
             vb.setStringCustomAttributeValue(VULNERABILITY_ID, vuln.getVulnId());
         }
         if (vuln.getTitle() != null) {
-            vb.setStringCustomAttributeValue(VULNERABILITY_TITLE, vuln.getTitle());
+            //vb.setStringCustomAttributeValue(VULNERABILITY_TITLE, vuln.getTitle());
         }
         if (vuln.getSubtitle() != null) {
-            vb.setStringCustomAttributeValue(VULNERABILITY_SUBTITLE, vuln.getSubtitle());
+            //vb.setStringCustomAttributeValue(VULNERABILITY_SUBTITLE, vuln.getSubtitle());
         }
         if (vuln.getDescription() != null) {
             vb.setStringCustomAttributeValue(VULNERABILITY_DESCRIPTION, vuln.getDescription());
