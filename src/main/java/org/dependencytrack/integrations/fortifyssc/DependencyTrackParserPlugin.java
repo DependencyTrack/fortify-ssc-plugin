@@ -39,42 +39,59 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DependencyTrackParserPlugin.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() throws Exception {
         LOGGER.info("DependencyTrackParserPlugin plugin is starting");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() throws Exception {
         LOGGER.info("DependencyTrackParserPlugin plugin is stopping");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<CustomVulnerabilityAttribute> getVulnerabilityAttributesClass() {
         return CustomVulnerabilityAttribute.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void parseScan(final ScanData scanData, final ScanBuilder scanBuilder) {
-        //parseJson(scanData, scanBuilder, this::parseScanInternal);
         scanBuilder.setScanDate(new Date()); //todo change this
         scanBuilder.setEngineVersion("3.4.0"); //todo change this
         scanBuilder.completeScan();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void parseVulnerabilities(final ScanData scanData, final VulnerabilityHandler vh) throws IOException {
-        //parseJson(scanData, vh, this::parseVulnerabilitiesInternal);
         final InputStream content = scanData.getInputStream(x -> x.endsWith(".json"));
         final FindingParser parser = new FindingParser(content).parse();
-
         for (Finding finding: parser.getFindings()) {
-            final StaticVulnerabilityBuilder vb = vh.startStaticVulnerability(finding.getMatrix());
+            final StaticVulnerabilityBuilder vb = vh.startStaticVulnerability(getUniqueId(finding));
             populateVulnerability(vb, finding);
             vb.completeVulnerability();
         }
     }
 
+    /**
+     * Creates a Fortify vulnerability from the specified Dependency-Track Finding.
+     * @param vb a StaticVulnerabilityBuilder to create a Fortify vulnerability with
+     * @param finding the Finding to create the vulnerability from
+     */
     private void populateVulnerability(final StaticVulnerabilityBuilder vb, final Finding finding) {
         final Project project = finding.getProject();
         final Component comp = finding.getComponent();
@@ -169,6 +186,25 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
         }
     }
 
+    /**
+     * Each Findings has a matrix which uniquely identifies the vulnerability. The matrix
+     * consists of three UUIDs separated by (:), each UUID representing a unique identifier
+     * for the project, component, and vulnerability. The length of the matrix exceeds the
+     * maximum length of the instanceId field in SSC, but it only needs to be unique with
+     * a scan. So omitting the project and shortening the sequence provides both consistency
+     * and uniqueness on a per-scan basis.
+     * @param finding the finding to generate a unique ID from
+     * @return a String representation of the ID
+     */
+    private String getUniqueId(Finding finding)  {
+        return (finding.getComponent().getUuid() + finding.getVulnerability().getUuid()).replace("-", "");
+    }
+
+    /**
+     * Converts Dependency-Track Severity to Fortify Priority Order.
+     * @param severity the Severity to convert
+     * @return a Fortify Priority
+     */
     private BasicVulnerabilityBuilder.Priority toFriority(final Severity severity) {
         if (Severity.CRITICAL == severity) {
             return BasicVulnerabilityBuilder.Priority.Critical;

@@ -5,7 +5,7 @@
     <groupId>org.dependencytrack</groupId>
     <artifactId>fortify-ssc-plugin</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.2</version> <!-- version must match (\\d+)(\\.\\d+)* therefore no -SNAPSHOT versions allowed -->
+    <version>0.1.7</version> <!-- version must match (\\d+)(\\.\\d+)* therefore no -SNAPSHOT versions allowed -->
 
     <name>Dependency-Track Plugin for Fortify SSC</name>
     <description>
@@ -96,14 +96,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.8.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
             <version>1.1.4</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -133,6 +129,29 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/maven/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -15,7 +15,6 @@
  */
 package org.dependencytrack.integrations.fortifyssc;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dependencytrack.integrations.fortifyssc.model.Analysis;
 import org.dependencytrack.integrations.fortifyssc.model.Component;
 import org.dependencytrack.integrations.fortifyssc.model.Finding;
@@ -57,7 +56,7 @@ public class FindingParser {
         final Component component = parseComponent(json.getJsonObject("component"));
         final Vulnerability vulnerability = parseVulnerability(json.getJsonObject("vulnerability"));
         final Analysis analysis = parseAnalysis(json.getJsonObject("analysis"));
-        final String matrix = StringUtils.trimToNull(json.getString("matrix"));
+        final String matrix = trimToNull(json.getString("matrix"));
         return new Finding(project, component, vulnerability, analysis, matrix);
     }
 
@@ -65,47 +64,54 @@ public class FindingParser {
     Project was not included in the response in Dependency-Track v3.3.x, therefore make it optional.
      */
     private Project parseProject(JsonObject json) {
-        final String uuid = StringUtils.trimToNull(json.getString("uuid", null));
-        final String name = StringUtils.trimToNull(json.getString("name", null));
-        final String version = StringUtils.trimToNull(json.getString("version", null));
-        if (uuid == null) {
+        if (json == null) {
             return null;
-        } else {
-            return new Project(uuid, name, version);
         }
+        final String uuid = trimToNull(json.getString("uuid", null));
+        final String name = trimToNull(json.getString("name", null));
+        final String version = trimToNull(json.getString("version", null));
+        return new Project(uuid, name, version);
     }
 
     private Component parseComponent(JsonObject json) {
-        final String uuid = StringUtils.trimToNull(json.getString("uuid"));
-        final String name = StringUtils.trimToNull(json.getString("name"));
-        final String group = StringUtils.trimToNull(json.getString("group", null));
-        final String version = StringUtils.trimToNull(json.getString("version", null));
-        final String purl = StringUtils.trimToNull(json.getString("purl", null));
+        final String uuid = trimToNull(json.getString("uuid"));
+        final String name = trimToNull(json.getString("name"));
+        final String group = trimToNull(json.getString("group", null));
+        final String version = trimToNull(json.getString("version", null));
+        final String purl = trimToNull(json.getString("purl", null));
         return new Component(uuid, name, group, version, purl);
     }
 
     private Vulnerability parseVulnerability(JsonObject json) {
-        final String uuid = StringUtils.trimToNull(json.getString("uuid"));
-        final String source = StringUtils.trimToNull(json.getString("source"));
-        final String vulnId = StringUtils.trimToNull(json.getString("vulnId", null));
-        final String title = StringUtils.trimToNull(json.getString("title", null));
-        final String subtitle = StringUtils.trimToNull(json.getString("subtitle", null));
-        final String description = StringUtils.trimToNull(json.getString("description", null));
-        final String recommendation = StringUtils.trimToNull(json.getString("recommendation", null));
+        final String uuid = trimToNull(json.getString("uuid"));
+        final String source = trimToNull(json.getString("source"));
+        final String vulnId = trimToNull(json.getString("vulnId", null));
+        final String title = trimToNull(json.getString("title", null));
+        final String subtitle = trimToNull(json.getString("subtitle", null));
+        final String description = trimToNull(json.getString("description", null));
+        final String recommendation = trimToNull(json.getString("recommendation", null));
         final Severity severity = Severity.valueOf(json.getString("severity", null));
         final Integer severityRank = json.getInt("severityRank", -1);
         final Integer cweId = json.getInt("cweId", -1);
-        final String cweName = StringUtils.trimToNull(json.getString("cweName", null));
+        final String cweName = trimToNull(json.getString("cweName", null));
         return new Vulnerability(uuid, source, vulnId, title, subtitle, description, recommendation, severity, severityRank, cweId, cweName);
     }
 
     private Analysis parseAnalysis(JsonObject json) {
-        final String state = StringUtils.trimToNull(json.getString("state", null));
+        final String state = trimToNull(json.getString("state", null));
         final boolean isSuppressed = json.getBoolean("isSuppressed", false);
         return new Analysis(state, isSuppressed);
     }
 
     public ArrayList<Finding> getFindings() {
         return findings;
+    }
+
+    private static String trimToNull(final String string) {
+        if (string == null) {
+            return null;
+        }
+        final String trimmed = string.trim();
+        return trimmed.length() == 0 ? null : trimmed;
     }
 }
