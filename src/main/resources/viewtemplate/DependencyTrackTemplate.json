@@ -20,13 +20,6 @@
       "items": [
         {
           "type": "template",
-          "title": "Vulnerability UUID",
-          "key": "customAttributes.vulnerabilityUuid",
-          "templateId": "SIMPLE",
-          "dataType": "string"
-        },
-        {
-          "type": "template",
           "title": "Vulnerability ID",
           "key": "customAttributes.vulnerabilityId",
           "templateId": "SIMPLE",
@@ -36,20 +29,6 @@
           "type": "template",
           "title": "Vulnerability source",
           "key": "customAttributes.vulnerabilitySource",
-          "templateId": "SIMPLE",
-          "dataType": "string"
-        },
-        {
-          "type": "template",
-          "title": "Vulnerability title",
-          "key": "customAttributes.vulnerabilityTitle",
-          "templateId": "SIMPLE",
-          "dataType": "string"
-        },
-        {
-          "type": "template",
-          "title": "Vulnerability subtitle",
-          "key": "customAttributes.vulnerabilitySubTitle",
           "templateId": "SIMPLE",
           "dataType": "string"
         },
@@ -78,13 +57,6 @@
       "items": [
         {
           "type": "template",
-          "title": "Dependency-Track Project UUID",
-          "key": "customAttributes.projectUuid",
-          "templateId": "SIMPLE",
-          "dataType": "string"
-        },
-        {
-          "type": "template",
           "title": "Project Name",
           "key": "customAttributes.projectName",
           "templateId": "SIMPLE",
@@ -94,13 +66,6 @@
           "type": "template",
           "title": "Project Version",
           "key": "customAttributes.projectVersion",
-          "templateId": "SIMPLE",
-          "dataType": "string"
-        },
-        {
-          "type": "template",
-          "title": "Component UUID",
-          "key": "customAttributes.componentUuid",
           "templateId": "SIMPLE",
           "dataType": "string"
         },
@@ -138,27 +103,6 @@
           "key": "customAttributes.cvssBaseScore",
           "templateId": "SIMPLE",
           "dataType": "integer"
-        },
-        {
-          "type": "template",
-          "title": "CVSS impact score",
-          "key": "customAttributes.cvssImpactScore",
-          "templateId": "SIMPLE",
-          "dataType": "integer"
-        },
-        {
-          "type": "template",
-          "title": "CVSS exploitability score",
-          "key": "customAttributes.cvssExploitabilityScore",
-          "templateId": "SIMPLE",
-          "dataType": "integer"
-        },
-        {
-          "type": "template",
-          "title": "CVSS vector",
-          "key": "customAttributes.cvssVector",
-          "templateId": "SIMPLE",
-          "dataType": "string"
         }
       ]
     }

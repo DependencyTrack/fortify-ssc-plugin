@@ -21,16 +21,19 @@ import com.fortify.plugin.api.ScanData;
 import com.fortify.plugin.api.StaticVulnerabilityBuilder;
 import com.fortify.plugin.api.VulnerabilityHandler;
 import com.fortify.plugin.spi.ParserPlugin;
-import org.dependencytrack.integrations.fortifyssc.model.Analysis;
-import org.dependencytrack.integrations.fortifyssc.model.Component;
-import org.dependencytrack.integrations.fortifyssc.model.Finding;
-import org.dependencytrack.integrations.fortifyssc.model.Project;
-import org.dependencytrack.integrations.fortifyssc.model.Severity;
-import org.dependencytrack.integrations.fortifyssc.model.Vulnerability;
+import org.dependencytrack.api.model.Analysis;
+import org.dependencytrack.api.model.Component;
+import org.dependencytrack.api.model.Finding;
+import org.dependencytrack.api.model.Project;
+import org.dependencytrack.api.model.Severity;
+import org.dependencytrack.api.model.Vulnerability;
+import org.dependencytrack.api.parsers.FindingParser;
+import org.dependencytrack.api.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.Date;
 
 import static org.dependencytrack.integrations.fortifyssc.CustomVulnerabilityAttribute.*;
@@ -43,7 +46,7 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
      * {@inheritDoc}
      */
     @Override
-    public void start() throws Exception {
+    public void start() {
         LOGGER.info("DependencyTrackParserPlugin plugin is starting");
     }
 
@@ -51,7 +54,7 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
      * {@inheritDoc}
      */
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         LOGGER.info("DependencyTrackParserPlugin plugin is stopping");
     }
 
@@ -67,9 +70,15 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
      * {@inheritDoc}
      */
     @Override
-    public void parseScan(final ScanData scanData, final ScanBuilder scanBuilder) {
-        scanBuilder.setScanDate(new Date()); //todo change this
-        scanBuilder.setEngineVersion("3.4.0"); //todo change this
+    public void parseScan(final ScanData scanData, final ScanBuilder scanBuilder) throws IOException {
+        final InputStream content = scanData.getInputStream(x -> x.endsWith(".json"));
+        final FindingParser findingParser = new FindingParser(content).parse();
+        try {
+            scanBuilder.setScanDate(DateUtil.fromISO8601(findingParser.getMeta().getTimestamp()));
+        } catch (ParseException e) {
+            scanBuilder.setScanDate(new Date());
+        }
+        scanBuilder.setEngineVersion(findingParser.getMeta().getVersion());
         scanBuilder.completeScan();
     }
 
@@ -79,10 +88,10 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
     @Override
     public void parseVulnerabilities(final ScanData scanData, final VulnerabilityHandler vh) throws IOException {
         final InputStream content = scanData.getInputStream(x -> x.endsWith(".json"));
-        final FindingParser parser = new FindingParser(content).parse();
-        for (Finding finding: parser.getFindings()) {
+        final FindingParser findingParser = new FindingParser(content).parse();
+        for (Finding finding: findingParser.getFindings()) {
             final StaticVulnerabilityBuilder vb = vh.startStaticVulnerability(getUniqueId(finding));
-            populateVulnerability(vb, finding);
+            populateVulnerability(vb, finding, findingParser.getProject());
             vb.completeVulnerability();
         }
     }
@@ -92,17 +101,17 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
      * @param vb a StaticVulnerabilityBuilder to create a Fortify vulnerability with
      * @param finding the Finding to create the vulnerability from
      */
-    private void populateVulnerability(final StaticVulnerabilityBuilder vb, final Finding finding) {
-        final Project project = finding.getProject();
+    private void populateVulnerability(final StaticVulnerabilityBuilder vb, final Finding finding, final Project project) {
         final Component comp = finding.getComponent();
         final Vulnerability vuln = finding.getVulnerability();
         final Analysis analysis = finding.getAnalysis();
 
         // Set builtin attributes
         vb.setCategory("3rd Party Component");
-
-        //vb.setFileName(fn.getFileName()); // todo: use PURL??????
+        vb.setSubCategory("");
+        vb.setFileName(createFilename(comp));
         vb.setVulnerabilityAbstract(vuln.getTitle());
+        vb.setPriority(toFriority(vuln.getSeverity()));
 
         // Confidence varies based on analyzer used. NPM Audit and OSSIndex are both high (5) confidence
         // Confidence of Dependency-Check findings will vary dramatically. Compromise on confidence score.
@@ -112,27 +121,15 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
         // to this vulnerability. Compromise on impact score.
         vb.setImpact(3.5f);
 
-        // Converts Dependency-Track severity to Fortify Priority Order
-        vb.setPriority(toFriority(vuln.getSeverity()));
-
         // PROJECT attributes
-        // NOTE: Project was not included in the response in Dependency-Track v3.3.x, therefore it may be null.
-        if (project != null) {
-            if (project.getUuid() != null) {
-                //vb.setStringCustomAttributeValue(PROJECT_UUID, project.getUuid());
-            }
-            if (project.getName() != null) {
-                //vb.setStringCustomAttributeValue(PROJECT_NAME, project.getName());
-            }
-            if (project.getVersion() != null) {
-                //vb.setStringCustomAttributeValue(PROJECT_VERSION, project.getVersion());
-            }
+        if (project.getName() != null) {
+            vb.setStringCustomAttributeValue(PROJECT_NAME, project.getName());
+        }
+        if (project.getVersion() != null) {
+            vb.setStringCustomAttributeValue(PROJECT_VERSION, project.getVersion());
         }
 
         // COMPONENT attributes
-        if (comp.getUuid() != null) {
-            //vb.setStringCustomAttributeValue(COMPONENT_UUID, comp.getUuid());
-        }
         if (comp.getName() != null) {
             vb.setStringCustomAttributeValue(COMPONENT_NAME, comp.getName());
         }
@@ -147,20 +144,11 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
         }
 
         // VULNERABILITY attributes
-        if (vuln.getUuid() != null) {
-            //vb.setStringCustomAttributeValue(VULNERABILITY_UUID, vuln.getUuid());
-        }
         if (vuln.getSource() != null) {
             vb.setStringCustomAttributeValue(VULNERABILITY_SOURCE, vuln.getSource());
         }
         if (vuln.getVulnId() != null) {
             vb.setStringCustomAttributeValue(VULNERABILITY_ID, vuln.getVulnId());
-        }
-        if (vuln.getTitle() != null) {
-            //vb.setStringCustomAttributeValue(VULNERABILITY_TITLE, vuln.getTitle());
-        }
-        if (vuln.getSubtitle() != null) {
-            //vb.setStringCustomAttributeValue(VULNERABILITY_SUBTITLE, vuln.getSubtitle());
         }
         if (vuln.getDescription() != null) {
             vb.setStringCustomAttributeValue(VULNERABILITY_DESCRIPTION, vuln.getDescription());
@@ -184,6 +172,22 @@ public class DependencyTrackParserPlugin implements ParserPlugin<CustomVulnerabi
         if (vuln.getDescription() != null) {
             vb.setStringCustomAttributeValue(DESCRIPTION, vuln.getDescription());
         }
+    }
+
+    /**
+     * Ideally, the PackageURL would be used (if available) for the filename, but
+     * SSC contains input validation that sanitizes the input stripping off the first
+     * half of the purl.
+     * @param component A component to create a pseudo filename for
+     * @return a String
+     */
+    private String createFilename(Component component) {
+        String filename = "";
+        if (component.getGroup() != null) {
+            filename = component.getGroup() + ":";
+        }
+        filename += component.getName() + ":" + component.getVersion();
+        return filename;
     }
 
     /**

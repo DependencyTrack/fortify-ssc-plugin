@@ -20,7 +20,7 @@
     </plugin-info>
     <issue-parser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <engine-type>DEPENDENCY_TRACK</engine-type>
-        <supported-engine-versions>[3.3.1, 4.0)</supported-engine-versions>
+        <supported-engine-versions>[3.4.0, 4.0)</supported-engine-versions>
         <view-template location="/viewtemplate/DependencyTrackTemplate.json">
             <description>Default Dependency-Track vulnerability view template.</description>
         </view-template>
