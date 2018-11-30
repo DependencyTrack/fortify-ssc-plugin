@@ -33,7 +33,7 @@
         <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
-        <maven.github.release.plugin.version>1.3.0</maven.github.release.plugin.version>
+        <plugin.github-release-plugin.version>1.3.0</plugin.github-release-plugin.version>
     </properties>
 
     <developers>
@@ -172,6 +172,23 @@
                 </executions>
                 <configuration>
                     <tag>${project.artifactId}-${project.version}</tag>
+                    <fileSets>
+                        <fileSet>
+                            <directory>${project.build.directory}</directory>
+                            <includes>
+                                <include>${project.build.finalName}.jar</include>
+                            </includes>
+                        </fileSet>
+                    </fileSets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>de.jutzig</groupId>
+                <artifactId>github-release-plugin</artifactId>
+                <version>${plugin.github-release-plugin.version}</version>
+                <configuration>
+                    <releaseName>${project.version}</releaseName>
+                    <tag>${project.version}</tag>
                     <fileSets>
                         <fileSet>
                             <directory>${project.build.directory}</directory>
