@@ -5,7 +5,7 @@ export PATH=JAVA_HOME/bin:$PATH
 read -p "Really deploy to GitHub releases (Y/N)? "
 if ( [ "$REPLY" == "Y" ] ) then
 
-  mvn clean
+  mvn clean package
   mvn github-release:release
 
 else
