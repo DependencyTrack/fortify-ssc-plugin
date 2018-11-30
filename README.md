@@ -16,6 +16,10 @@ Requirements
 - Fortify SSC 17.20 or higher
 - Dependency-Track 3.4.0 or higher
 
+Documentation
+-------------------
+https://docs.dependencytrack.org/integrations/fortify-ssc/
+
 Copyright & License
 -------------------
 
