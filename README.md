@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/DependencyTrack/fortify-ssc-plugin.svg?branch=master)](https://travis-ci.org/DependencyTrack/fortify-ssc-plugin)
+[![Build Status](https://github.com/DependencyTrack/fortify-ssc-plugin/workflows/Maven%20CI/badge.svg)](https://github.com/DependencyTrack/fortify-ssc-plugin/actions?workflow=Maven+CI)
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)][License]
 
 Dependency-Track plugin for Fortify SSC
