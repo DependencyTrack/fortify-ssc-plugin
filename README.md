@@ -1,4 +1,5 @@
 [![Build Status](https://github.com/DependencyTrack/fortify-ssc-plugin/workflows/Maven%20CI/badge.svg)](https://github.com/DependencyTrack/fortify-ssc-plugin/actions?workflow=Maven+CI)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/71f3735005c24b5db9f6528cf793e91a)](https://www.codacy.com/gh/DependencyTrack/fortify-ssc-plugin/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DependencyTrack/fortify-ssc-plugin&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)][License]
 
 Dependency-Track plugin for Fortify SSC
